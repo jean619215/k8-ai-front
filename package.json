@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.0.0",
     "@lingui/react": "^5.1.0",
     "@lingui/swc-plugin": "^5.0.1",
+    "@mui/icons-material": "^6.2.0",
     "@mui/material": "^6.2.0",
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
