@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -23,14 +23,14 @@ export default function NavigationBar({ className }: { className?: string }) {
 
   useEffect(() => {
     setCurrentRoute(pathname);
+    console.log("_____currentRoute", currentRoute);
   }, [pathname]);
 
   // 當前的link 顏色狀態不一樣
   return (
-    <div className={cn("relative flex flex-col pt-16 gap-2", className)}>
+    <div className={cn("relative flex flex-col pt-16 gap-2 ", className)}>
       {navigationConfig.map((item) => (
         <Button
-          color="primary"
           key={item.route}
           disabled={currentRoute === item.route}
           sx={{

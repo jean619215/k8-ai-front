@@ -35,12 +35,14 @@ export default function RootLayout({
             )}
           >
             <Header
-              className={cn("col-span-2 row-span-1 bg-white z-10 shadow-md")}
+              className={cn(
+                "px-5 col-span-2 row-span-1 bg-white z-10 shadow-md"
+              )}
             />
             <>
               <NavigationBar
                 className={cn(
-                  "bg-purple-03 col-span-1 row-span-2 overflow-hidden"
+                  "bg-[#FCFAF2] col-span-1 row-span-2 overflow-hidden"
                 )}
               />
               <div
@@ -48,7 +50,7 @@ export default function RootLayout({
                   "relative bg-blue-purple-grey-00 col-span-1 row-span-1 overflow-hidden"
                 )}
               >
-                <div
+                {/* <div
                   className="text-black flex justify-center items-center absolute left-0 top-6 bg-purple-03 cursor-pointer w-5 h-11 shrink-0 rounded-r-lg z-[1]"
                   onClick={() => setShowingNavigation(!isShowingNavigation)}
                 >
@@ -61,7 +63,7 @@ export default function RootLayout({
                         : "transform rotate-0"
                     )}
                   />
-                </div>
+                </div> */}
                 <div className={cn("relative w-full h-full overflow-y-auto")}>
                   {children}
                 </div>

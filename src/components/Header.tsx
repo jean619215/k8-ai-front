@@ -6,10 +6,12 @@ import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
 
 import logoImage from "@/assets/icons/main-logo.svg";
 import avatarImg from "@/assets/images/avatar.png";
 import { cn } from "@/lib/utils";
+import { useLayoutStore } from "@/stores/useLayoutStore";
 // import { i18nMenuOptions, II18nMenuOption } from "@/config/i18nOptions";
 // import { LocalStorageKey } from "@/enums/index.enum";
 // import useUserLogout from "@/hooks/useUserLogout";
@@ -25,6 +27,7 @@ enum PopperType {
 export default function Header({ className }: { className?: string }) {
   //   const { user, updateUser } = useUserStore();
   //   const { userLogoutLoading, logout } = useUserLogout();
+  const { isShowingNavigation, setShowingNavigation } = useLayoutStore();
 
   const [showPopper, setShowPopper] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null); //popper needs to be attached to an element
@@ -72,6 +75,13 @@ export default function Header({ className }: { className?: string }) {
     <header
       className={cn("relative flex items-center justify-between", className)}
     >
+      <IconButton
+        aria-label="menu"
+        color="primary"
+        onClick={() => setShowingNavigation(!isShowingNavigation)}
+      >
+        <MenuIcon />
+      </IconButton>
       {/* <Image
         priority={true}
         src={logoImage}
