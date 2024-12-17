@@ -13,4 +13,17 @@ export const defaultTheme = createTheme({
   typography: {
     fontFamily: "Roboto", // Customize the default font family
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+          "&.Mui-disabled": {
+            cursor: "not-allowed",
+            pointerEvents: "auto",
+          },
+        },
+      },
+    },
+  },
 });
