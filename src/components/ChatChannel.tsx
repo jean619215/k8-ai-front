@@ -7,14 +7,14 @@ import {
   styled,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import useOpenAI from "@/hooks/useOpenAI";
 
-export interface IMessage {
-  message: string;
-  isUser: boolean;
-}
-
-const ChatChannel: React.FC = () => {
-  const [messages, setMessages] = useState<IMessage[]>([]);
+const ChatChannel: React.FC = (file) => {
+  // const [messages, setMessages] = useState<IMessage[]>([]);
+  const { messagesStore, sendChatMessage } = useOpenAI();
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -71,7 +71,12 @@ const ChatChannel: React.FC = () => {
                   message.isUser ? "bg-blue-500 text-white" : "bg-gray-200"
                 }`}
               >
-                {message.message}
+                <ReactMarkdown
+                  className="prose whitespace-pre-wrap"
+                  children={message.message}
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
+                ></ReactMarkdown>
               </div>
             </div>
           ))}
