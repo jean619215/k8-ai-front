@@ -1,45 +1,65 @@
+import { mathFormat } from "@/lib/utils";
+import axios, { AxiosResponse } from "axios";
 import { useState, useEffect } from "react";
-import OpenAI from "openai";
 
 export interface IMessage {
   message: string;
   isUser: boolean;
 }
 
-const useOpenAI = () => {
-  const openai = new OpenAI();
+export interface IOpenAiContent {
+  type: string;
+  text?: string;
+  image_url?: string;
+}
 
-  const AI_MODEL = "gpt-4o-mini";
-  const [messagesStore, setMessagesStore] = useState<IMessage[]>([]);
+const useOpenAI = () => {
+  const [messageStore, setMessageStore] = useState<IMessage[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const sendChatMessage = async (message: string) => {
-    if (message.trim() === "") {
-      return;
-    }
-
+  const sendChatMessage = async (userMsg: IOpenAiContent[] | string[]) => {
     setLoading(true);
 
-    const response = await openai.chat.completions.create({
-      model: AI_MODEL,
+    // let newMessages: IMessage[] = [
+    //   {
+    //     message: userMsg.find((msg) => msg.type === "text")?.text || "",
+    //     isUser: true,
+    //   },
+    // ];
+
+    setMessageStore((prevMessages: IMessage[]) => [
+      ...prevMessages,
+      {
+        message: userMsg.find((msg) => msg.type === "text")?.text || "",
+        isUser: true,
+      },
+    ]);
+
+    const response = await axios.post("/api/openai", {
       messages: [
         {
           role: "system",
           content:
             "Imagine you are an elementary school teacher guiding children to solve math problems without giving them the answer directly. You are given a math problem and a picture of the problem. You need to give the children some hints to solve the problem.",
         },
-        { role: "user", content: message },
+        { role: "user", content: userMsg },
       ],
-      max_tokens: 1000,
     });
 
-    if (response.choices[0]) {
-      const aiMessage = response.choices[0].message.content;
+    if (response.status === 200) {
+      // const aiMessage = response.data.result.message.content;
+      const aiMessage =
+        "要計算角度 \\( A \\)，我們可以從給定的資訊開始進行推理。\n\n1. **考慮三角形的內部角和：** 在任何三角形中，三個內部角的和始終為 180 度。\n   \n2. **使用已知角度的信息：**\n   - 我們知道 \\( \\angle ADB = 45^\\circ \\)。\n   - 也知道 \\( \\angle DBC";
       if (aiMessage) {
-        setMessagesStore((prevMessages: IMessage[]) => [
+        // newMessages.push({ message: aiMessage, isUser: false });
+
+        console.log("_____aiMessage", mathFormat(aiMessage));
+        setMessageStore((prevMessages: IMessage[]) => [
           ...prevMessages,
-          { message: message, isUser: true },
-          { message: aiMessage, isUser: false },
+          {
+            message: mathFormat(aiMessage),
+            isUser: false,
+          },
         ]);
       }
     }
@@ -48,7 +68,7 @@ const useOpenAI = () => {
   };
 
   return {
-    messagesStore,
+    messageStore,
     loading,
     sendChatMessage,
   };
