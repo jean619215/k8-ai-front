@@ -1,19 +1,22 @@
 "use client";
-import useCommonStore from "@/stores/useCommonStore";
+import DownloadIcon from "@mui/icons-material/Download";
 import { Button, Typography } from "@mui/material";
 import React, { use, useEffect, useRef, useState } from "react";
 import { ReactSketchCanvas } from "react-sketch-canvas";
-import DownloadIcon from "@mui/icons-material/Download";
+
 import { VisuallyHiddenInput } from "@/components/VisuallyHiddenInput";
 import { cn } from "@/lib/utils";
+import useCommonStore from "@/stores/useCommonStore";
 
 const Whiteboard = ({ className }: { className?: string }) => {
-  const { setUserSavedData, userSavedData } = useCommonStore();
+  const { whiteboardImage, setWhiteboardImage, uploadImageFile } =
+    useCommonStore();
 
   const colorInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<any>(null);
   // const [savedData, setSavedData] = useState<string | null>(null);
-  // const [savedImage, setSavedImage] = useState<string | null>(null);
+
+  // const [whiteboardData, setWhiteboardData] = useState<any>(null);
   const [brushColor, setBrushColor] = useState("#000000");
   const [brushRadius, setBrushRadius] = useState(5);
   const [backgroundImage, setBackgroundImage] = useState<string | undefined>(
@@ -21,17 +24,20 @@ const Whiteboard = ({ className }: { className?: string }) => {
   ); // 背景圖片
 
   useEffect(() => {
-    if (userSavedData && userSavedData.type.includes("image")) {
+    if (uploadImageFile) {
       // setBackgroundImage(userSavedData.url);
       const reader = new FileReader();
       reader.onload = (e) => {
         setBackgroundImage(e.target?.result as string); // 設定背景圖片
+        // 儲存
+        handleSaveImage();
       };
-      reader.readAsDataURL(userSavedData);
+      reader.readAsDataURL(uploadImageFile);
     } else {
       setBackgroundImage(undefined);
+      handleSaveImage();
     }
-  }, [userSavedData]);
+  }, [uploadImageFile]);
 
   // // 保存畫布內容
   // const handleSave = async () => {
@@ -45,16 +51,21 @@ const Whiteboard = ({ className }: { className?: string }) => {
   // };
 
   // 保存畫布內容
-  const handleSave = async (e: any) => {
-    if (canvasRef.current && e.length > 0) {
+  const handleSaveImage = async () => {
+    if (canvasRef.current) {
       // const data = await canvasRef.current.exportPaths(); // 獲取畫布的路徑數據 (JSON)
       // setSavedData(JSON.stringify(data));
 
       const image = await canvasRef.current.exportImage("png"); // 導出為圖片
       //圖片轉換為base64
       // setSavedImage(image);
-      setUserSavedData(image); // 設定保存的數據
+      // setUserSavedData(image); // 設定保存的數據
+      setWhiteboardImage(image);
     }
+  };
+
+  const handleWhiteboardChange = (e: any) => {
+    handleSaveImage();
   };
 
   // // 加載保存的內容
@@ -67,6 +78,8 @@ const Whiteboard = ({ className }: { className?: string }) => {
   // 清除畫布
   const handleClear = () => {
     canvasRef.current?.clearCanvas();
+    // 儲存
+    // handleSave([]);
   };
 
   // 下載 JSON 文件
@@ -187,15 +200,15 @@ const Whiteboard = ({ className }: { className?: string }) => {
         strokeWidth={brushRadius}
         backgroundImage={backgroundImage}
         preserveBackgroundImageAspectRatio={"xMidYMin"}
-        onChange={handleSave}
+        onChange={handleWhiteboardChange}
       />
 
       {/* 顯示保存的圖片 */}
-      {/* {userSavedData && (
+      {/* {whiteboardImage && (
         <div className="mt-4">
           <h3>保存的圖片：</h3>
           <img
-            src={userSavedData}
+            src={whiteboardImage}
             alt="Saved Canvas"
             style={{ border: "1px solid #ccc" }}
           />

@@ -1,6 +1,7 @@
-import { mathFormat } from "@/lib/utils";
 import axios, { AxiosResponse } from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import { preprocessLaTeX } from "@/lib/utils";
 
 export interface IMessage {
   message: string;
@@ -15,10 +16,10 @@ export interface IOpenAiContent {
 
 const useOpenAI = () => {
   const [messageStore, setMessageStore] = useState<IMessage[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [openAILoading, setOpenAILoading] = useState(false);
 
   const sendChatMessage = async (userMsg: IOpenAiContent[] | string[]) => {
-    setLoading(true);
+    setOpenAILoading(true);
 
     // let newMessages: IMessage[] = [
     //   {
@@ -35,6 +36,8 @@ const useOpenAI = () => {
       },
     ]);
 
+    console.log("______userMsg______", userMsg);
+
     const response = await axios.post("/api/openai", {
       messages: [
         {
@@ -47,29 +50,28 @@ const useOpenAI = () => {
     });
 
     if (response.status === 200) {
-      // const aiMessage = response.data.result.message.content;
-      const aiMessage =
-        "要計算角度 \\( A \\)，我們可以從給定的資訊開始進行推理。\n\n1. **考慮三角形的內部角和：** 在任何三角形中，三個內部角的和始終為 180 度。\n   \n2. **使用已知角度的信息：**\n   - 我們知道 \\( \\angle ADB = 45^\\circ \\)。\n   - 也知道 \\( \\angle DBC";
+      const aiMessage = response.data.result.message.content;
+      // const aiMessage =
+      //   "要計算角度 \\( A \\)，我們可以從給定的資訊開始進行推理。\n\n1. **考慮三角形的內部角和：** 在任何三角形中，三個內部角的和始終為 180 度。\n   \n2. **使用已知角度的信息：**\n   - 我們知道 \\( \\angle ADB = 45^\\circ \\)。\n   - 也知道 \\( \\angle DBC";
       if (aiMessage) {
         // newMessages.push({ message: aiMessage, isUser: false });
 
-        console.log("_____aiMessage", mathFormat(aiMessage));
         setMessageStore((prevMessages: IMessage[]) => [
           ...prevMessages,
           {
-            message: mathFormat(aiMessage),
+            message: preprocessLaTeX(aiMessage),
             isUser: false,
           },
         ]);
       }
     }
 
-    setLoading(false);
+    setOpenAILoading(false);
   };
 
   return {
     messageStore,
-    loading,
+    openAILoading,
     sendChatMessage,
   };
 };

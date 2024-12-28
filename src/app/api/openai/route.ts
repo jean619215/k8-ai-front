@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 // import { Configuration, OpenAIApi } from "openai";
 import OpenAI from "openai";
-import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 const AI_MODEL = "gpt-4o-mini";
 
@@ -26,25 +25,27 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("_____body", body);
+    console.log("_____body", body.messages);
 
     // return NextResponse.json({ body });
-    return NextResponse.json({
-      result: {
-        message: {
-          content:
-            "要計算角度 \\( A \\)，我們可以從給定的資訊開始進行推理。\n\n1. **考慮三角形的內部角和：** 在任何三角形中，三個內部角的和始終為 180 度。\n   \n2. **使用已知角度的信息：**\n   - 我們知道 \\( \\angle ADB = 45^\\circ \\)。\n   - 也知道 \\( \\angle DBC",
-        },
-      },
-    });
+    // return NextResponse.json({
+    //   result: {
+    //     message: {
+    //       content:
+    //         "要計算角度 \\( A \\)，我們可以從給定的資訊開始進行推理。\n\n1. **考慮三角形的內部角和：** 在任何三角形中，三個內部角的和始終為 180 度。\n   \n2. **使用已知角度的信息：**\n   - 我們知道 \\( \\angle ADB = 45^\\circ \\)。\n   - 也知道 \\( \\angle DBC",
+    //     },
+    //   },
+    // });
 
     const completion = await openai.chat.completions.create({
       model: AI_MODEL,
       messages: body.messages,
-      max_tokens: 100,
+      max_tokens: 300,
     });
 
     const result = completion.choices[0];
+
+    console.log("_____result", completion);
 
     // const result = {
     //   message: {

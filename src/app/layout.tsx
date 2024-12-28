@@ -1,15 +1,16 @@
 "use client";
 import "./globals.css";
 
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Backdrop, CircularProgress, ThemeProvider } from "@mui/material";
-import { defaultTheme } from "@/config/theme";
+import { Inter } from "next/font/google";
+
+import Header from "@/components/Header";
 import NavigationBar from "@/components/NavigationBar";
+import { defaultTheme } from "@/config/theme";
 import { cn } from "@/lib/utils";
 import useCommonStore from "@/stores/useCommonStore";
 import { useLayoutStore } from "@/stores/useLayoutStore";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { Inter } from "next/font/google";
-import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 

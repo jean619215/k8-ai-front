@@ -4,28 +4,31 @@ import { IAlertMessage } from "@/components/Alert";
 
 export type CommonStoreState = {
   isLoading: boolean;
-  isShowingAlert: boolean;
-  alertMessage: IAlertMessage; // Add 'alertMessage' property
-
-  userSavedData: File | undefined; // use saved data (image or file)
-  isNewData: boolean; // Add 'isNewData' property
-
   setIsLoading: (isLoading: boolean) => void;
+
+  isShowingAlert: boolean;
+
+  alertMessage: IAlertMessage;
   setShowingAlert: (isShowing: boolean, alertMessage?: IAlertMessage) => void;
-  setUserSavedData: (userSavedData: any) => void; // set saved data (image or file)
-  setIsNewData: (isNewData: boolean) => void; // Add 'setIsNewData' method
+
+  uploadImageFile: File | undefined;
+  setUploadImageFile: (uploadImageFile: File | undefined) => void;
+
+  whiteboardImage: string | undefined;
+  setWhiteboardImage: (whiteboardImage: string | undefined) => void;
+  isNewWhiteboardImage: boolean;
+  setIsNewWhiteboardImage: (isNewWhiteboardImage: boolean) => void;
 };
 
 const useCommonStore = create<CommonStoreState>((set) => ({
   isLoading: false,
+  setIsLoading: (isLoading) => set({ isLoading }),
+
   isShowingAlert: false,
   alertMessage: {
     message: "",
     messageType: "info",
   },
-  userSavedData: undefined,
-  isNewData: false,
-  setIsLoading: (isLoading) => set({ isLoading }),
   setShowingAlert: (isShowing, alertMessage) => {
     set({
       isShowingAlert: isShowing,
@@ -37,12 +40,19 @@ const useCommonStore = create<CommonStoreState>((set) => ({
       });
     }
   },
-  setUserSavedData: (userSavedData) =>
+
+  uploadImageFile: undefined,
+  setUploadImageFile: (uploadImageFile) => set({ uploadImageFile }),
+
+  whiteboardImage: undefined,
+  setWhiteboardImage: (whiteboardImage) =>
     set({
-      userSavedData,
-      isNewData: true,
+      whiteboardImage,
+      isNewWhiteboardImage: !!whiteboardImage,
     }),
-  setIsNewData: (isNewData) => set({ isNewData }),
+  isNewWhiteboardImage: false,
+  setIsNewWhiteboardImage: (isNewWhiteboardImage) =>
+    set({ isNewWhiteboardImage }),
 }));
 
 export default useCommonStore;

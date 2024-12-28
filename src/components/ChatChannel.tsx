@@ -3,10 +3,9 @@ import "katex/dist/katex.min.css";
 
 import {
   Button,
+  CircularProgress,
   InputAdornment,
   OutlinedInput,
-  styled,
-  TextField,
 } from "@mui/material";
 import React, { use, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -17,14 +16,14 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
 import useOpenAI from "@/hooks/useOpenAI";
-import { cn, preprocessLaTeX } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import useCommonStore from "@/stores/useCommonStore";
 
 function ChatChannel({ className }: { className?: string }) {
   // const [messages, setMessages] = useState<IMessage[]>([]);
-  const { userSavedData, setUserSavedData, isNewData, setIsNewData } =
+  const { whiteboardImage, isNewWhiteboardImage, setIsNewWhiteboardImage } =
     useCommonStore();
-  const { messageStore, sendChatMessage } = useOpenAI();
+  const { messageStore, openAILoading, sendChatMessage } = useOpenAI();
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
@@ -70,34 +69,19 @@ function ChatChannel({ className }: { className?: string }) {
       },
     ];
 
-    if (userSavedData && isNewData) {
-      console.log("_____userSavedData", userSavedData);
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = e.target?.result as string;
-
-        if (userSavedData.type.includes("image")) {
-          messages.push({
-            type: "image_url",
-            image_url: {
-              url: data,
-            },
-          });
-        } else {
-          messages.push(data);
-        }
-        sendChatMessage(messages);
-        setInputValue("");
-        setIsLoading(false);
-      };
-      reader.readAsDataURL(userSavedData);
-      setIsNewData(false);
-    } else {
-      sendChatMessage(messages);
-      setInputValue("");
-      setIsLoading(false);
+    if (whiteboardImage && isNewWhiteboardImage) {
+      messages.push({
+        type: "image_url",
+        image_url: {
+          url: whiteboardImage,
+        },
+      });
     }
+
+    sendChatMessage(messages);
+    setInputValue("");
+    setIsLoading(false);
+    setIsNewWhiteboardImage(false);
 
     // Simulate AI response delay
     // setTimeout(() => {
@@ -121,7 +105,7 @@ function ChatChannel({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex flex-col rounded-md m-1 border-2 border-brown-01 min-h-96 ",
+        "flex flex-col rounded-md m-1 border-2 border-brown-01",
         className
       )}
     >
@@ -142,13 +126,21 @@ function ChatChannel({ className }: { className?: string }) {
             >
               <ReactMarkdown
                 className="prose whitespace-pre-wrap"
-                children={preprocessLaTeX(message.message)}
                 remarkPlugins={[rehypeMathjax, remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeKatex, rehypeHighlight]}
-              ></ReactMarkdown>
+              >
+                {message.message}
+              </ReactMarkdown>
             </div>
           </div>
         ))}
+        {openAILoading && (
+          <div className={`flex items-center p-2 justify-star`}>
+            <div className={`p-3 rounded-lg bg-gray-200 mr-5`}>
+              <CircularProgress />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="w-full  border-t border-brown-01">

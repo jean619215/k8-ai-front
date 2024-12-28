@@ -23,7 +23,6 @@ export default function NavigationBar({ className }: { className?: string }) {
 
   useEffect(() => {
     setCurrentRoute(pathname);
-    console.log("_____currentRoute", currentRoute);
   }, [pathname]);
 
   // 當前的link 顏色狀態不一樣

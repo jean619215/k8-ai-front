@@ -10,7 +10,7 @@ import remarkMath from "remark-math";
 
 import { preprocessLaTeX } from "@/lib/utils";
 
-export function ChatPage() {
+export default function ChatPage() {
   const markdown = `The lift coefficient ($C_L$) is a dimensionless coefficient.`;
   const aiMessage = preprocessLaTeX(`
   要計算角度 \\( A \\)，我們可以從給定的資訊開始進行推理。\n\n1. **考慮三角形的內部角和：** 在任何三角形中，三個內部角的和始終為 180 度。\n   \n2. **使用已知角度的信息：**\n   - 我們知道 \\( \\angle ADB = 45^\\circ \\)。\n   - 也知道 \\( \\angle DBC\\)

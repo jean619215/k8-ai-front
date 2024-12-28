@@ -1,28 +1,30 @@
 "use client";
 
-import useCommonStore from "@/stores/useCommonStore";
-import { Button, IconButton, Typography, styled } from "@mui/material";
-import React, { useRef, useState } from "react";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { VisuallyHiddenInput } from "@/components/VisuallyHiddenInput";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { cn } from "@/lib/utils";
-const acceptFileTypes = ["image/*", ".pdf", ".doc", ".docx"];
+import { Button, IconButton, styled, Typography } from "@mui/material";
+import React, { useRef, useState } from "react";
 
-function Upload({ className }: { className?: string }) {
-  const { setUserSavedData, userSavedData } = useCommonStore();
+import { VisuallyHiddenInput } from "@/components/VisuallyHiddenInput";
+import { cn } from "@/lib/utils";
+import useCommonStore from "@/stores/useCommonStore";
+const acceptFileTypes = ["image/*"];
+
+function UploadImage({ className }: { className?: string }) {
+  const { uploadImageFile, setUploadImageFile } = useCommonStore();
+  // const [file, setFile] = useState<File | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (file) {
-      setUserSavedData(file);
-      //   const reader = new FileReader();
-      //   reader.onload = (e) => {
-      //     setUserSavedData(e.target?.result as string);
-      //   };
-      //   reader.readAsDataURL(file);
+      setUploadImageFile(file);
+      // const reader = new FileReader();
+      // reader.onload = (e) => {
+      //   setUserSavedData(e.target?.result as string);
+      // };
+      // reader.readAsDataURL(file);
     }
     // setSelectedFile(file);
   };
@@ -45,7 +47,7 @@ function Upload({ className }: { className?: string }) {
   };
 
   const handleClear = () => {
-    setUserSavedData(undefined);
+    setUploadImageFile(undefined);
   };
 
   return (
@@ -90,10 +92,10 @@ function Upload({ className }: { className?: string }) {
           accept={acceptFileTypes.join(",")}
           onChange={handleFileChange}
         />
-        {userSavedData?.name && (
+        {uploadImageFile?.name && (
           <div className="flex items-center">
             <Typography variant="body2" color="primary">
-              {userSavedData.name}
+              {uploadImageFile.name}
             </Typography>
             <IconButton color="primary" onClick={handleClear}>
               <DeleteIcon />
@@ -105,4 +107,4 @@ function Upload({ className }: { className?: string }) {
   );
 }
 
-export default Upload;
+export default UploadImage;

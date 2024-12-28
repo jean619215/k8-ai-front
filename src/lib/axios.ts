@@ -18,7 +18,6 @@ const instance = axios.create({
 // async function setAuthToken() {
 //   const idToken = await AsyncStorage.getItem(LocalStorageKey.ID_TOKEN); // 從 AsyncStorage 取得 idToken
 //   if (idToken) {
-//     console.log("____setAuthToken idToken", idToken);
 //     instance.defaults.headers.common["Authorization"] = `Bearer ${idToken}`; // 設定授權令牌
 //   }
 // }
