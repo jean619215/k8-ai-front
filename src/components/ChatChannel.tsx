@@ -20,7 +20,12 @@ import { cn } from "@/lib/utils";
 import useCommonStore from "@/stores/useCommonStore";
 
 function ChatChannel({ className }: { className?: string }) {
-  // const [messages, setMessages] = useState<IMessage[]>([]);
+  const [messages, setMessages] = useState<
+    {
+      message: string;
+      isUser: boolean;
+    }[]
+  >([]);
   const { whiteboardImage, isNewWhiteboardImage, setIsNewWhiteboardImage } =
     useCommonStore();
   const { messageStore, openAILoading, sendChatMessage } = useOpenAI();
@@ -55,7 +60,7 @@ function ChatChannel({ className }: { className?: string }) {
     setIsComposing(true);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputValue.trim() === "" || isLoading) {
       return;
     }
@@ -78,10 +83,22 @@ function ChatChannel({ className }: { className?: string }) {
       });
     }
 
-    sendChatMessage(messages);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { message: inputValue, isUser: true },
+    ]);
+
     setInputValue("");
     setIsLoading(false);
     setIsNewWhiteboardImage(false);
+
+    const aiMessage = await sendChatMessage(messages);
+    if (aiMessage) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { message: aiMessage, isUser: false },
+      ]);
+    }
 
     // Simulate AI response delay
     // setTimeout(() => {
@@ -110,7 +127,7 @@ function ChatChannel({ className }: { className?: string }) {
       )}
     >
       <div className="flex-1 overflow-y-auto p-2" ref={channelRef}>
-        {messageStore.map((message, index) => (
+        {messages.map((message, index) => (
           <div
             key={index}
             className={`flex items-center p-2 ${

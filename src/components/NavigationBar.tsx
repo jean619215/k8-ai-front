@@ -12,8 +12,8 @@ const navigationConfig = [
     route: "/chat/",
   },
   {
-    label: () => <div>Home Work</div>,
-    route: "/homework/",
+    label: () => <div>Whiteboard</div>,
+    route: "/whiteboard/",
   },
 ];
 

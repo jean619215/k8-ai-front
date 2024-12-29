@@ -4,7 +4,7 @@ import ChatChannel from "@/components/ChatChannel";
 import Upload from "@/components/UploadImage";
 import Whiteboard from "@/components/Whiteboard";
 
-export default function HomeworkPage() {
+export default function WhiteboardPage() {
   return (
     <div className="h-full w-full p-2">
       <Upload className="" />

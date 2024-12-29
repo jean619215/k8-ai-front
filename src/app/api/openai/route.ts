@@ -45,7 +45,7 @@ export async function POST(req: Request) {
 
     const result = completion.choices[0];
 
-    console.log("_____result", completion);
+    console.log("_____result", result);
 
     // const result = {
     //   message: {

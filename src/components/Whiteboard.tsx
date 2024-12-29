@@ -39,6 +39,12 @@ const Whiteboard = ({ className }: { className?: string }) => {
     }
   }, [uploadImageFile]);
 
+  useEffect(() => {
+    if (backgroundImage) {
+      handleSaveImage();
+    }
+  }, [backgroundImage]);
+
   // // 保存畫布內容
   // const handleSave = async () => {
   //   if (canvasRef.current) {
