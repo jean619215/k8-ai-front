@@ -15,6 +15,7 @@ import rehypeMathjax from "rehype-mathjax";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
+import VoiceRecorder from "@/components/VoiceRecorder";
 import useOpenAI from "@/hooks/useOpenAI";
 import { cn } from "@/lib/utils";
 import useCommonStore from "@/stores/useCommonStore";
@@ -26,8 +27,12 @@ function ChatChannel({ className }: { className?: string }) {
       isUser: boolean;
     }[]
   >([]);
-  const { whiteboardImage, isNewWhiteboardImage, setIsNewWhiteboardImage } =
-    useCommonStore();
+  const {
+    whiteboardImage,
+    isNewWhiteboardImage,
+    setIsNewWhiteboardImage,
+    speechToText,
+  } = useCommonStore();
   const { messageStore, openAILoading, sendChatMessage } = useOpenAI();
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -119,6 +124,12 @@ function ChatChannel({ className }: { className?: string }) {
     }
   }, [messageStore]);
 
+  useEffect(() => {
+    if (speechToText) {
+      setInputValue(speechToText);
+    }
+  }, [speechToText]);
+
   return (
     <div
       className={cn(
@@ -181,6 +192,7 @@ function ChatChannel({ className }: { className?: string }) {
               <Button onClick={handleSendMessage} disabled={isLoading}>
                 Send
               </Button>
+              <VoiceRecorder />
             </InputAdornment>
           }
         />

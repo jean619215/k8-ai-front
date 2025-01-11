@@ -18,6 +18,9 @@ export type CommonStoreState = {
   setWhiteboardImage: (whiteboardImage: string | undefined) => void;
   isNewWhiteboardImage: boolean;
   setIsNewWhiteboardImage: (isNewWhiteboardImage: boolean) => void;
+
+  speechToText: string | undefined;
+  setSpeechToText: (speechToText: string | undefined) => void;
 };
 
 const useCommonStore = create<CommonStoreState>((set) => ({
@@ -53,6 +56,9 @@ const useCommonStore = create<CommonStoreState>((set) => ({
   isNewWhiteboardImage: false,
   setIsNewWhiteboardImage: (isNewWhiteboardImage) =>
     set({ isNewWhiteboardImage }),
+
+  speechToText: undefined,
+  setSpeechToText: (speechToText) => set({ speechToText }),
 }));
 
 export default useCommonStore;

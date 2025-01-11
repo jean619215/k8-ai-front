@@ -210,7 +210,7 @@ const Whiteboard = ({ className }: { className?: string }) => {
       />
 
       {/* 顯示保存的圖片 */}
-      {/* {whiteboardImage && (
+      {whiteboardImage && (
         <div className="mt-4">
           <h3>保存的圖片：</h3>
           <img
@@ -219,7 +219,7 @@ const Whiteboard = ({ className }: { className?: string }) => {
             style={{ border: "1px solid #ccc" }}
           />
         </div>
-      )} */}
+      )}
     </div>
   );
 };
