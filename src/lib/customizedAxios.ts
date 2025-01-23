@@ -13,7 +13,7 @@ const instance = axios.create({
   baseURL: "",
 });
 
-// instance.defaults.headers.common['Content-Type'] = 'application/json';
+instance.defaults.headers.common["Content-Type"] = "application/json";
 
 // async function setAuthToken() {
 //   const idToken = await AsyncStorage.getItem(LocalStorageKey.ID_TOKEN); // 從 AsyncStorage 取得 idToken
@@ -22,31 +22,31 @@ const instance = axios.create({
 //   }
 // }
 
-instance.interceptors.request.use(
-  async function (config) {
-    // 從 localStorage 取得 token
-    // const storage = getLocalStorage(LocalStorageKey.USER_INFO);
-    // if (storage) {
-    //   const userInfo = storage;
-    //   if (userInfo && userInfo?.state?.user?.token) {
-    //     config.headers["x-auth-token"] = userInfo.state.user.token;
-    //   }
-    // }
-    // return config;
-  },
-  function (error) {
-    // const { setShowingAlert } = commonStore.getState();
-    // Do something with request error
-    console.error(error);
-    // setShowingAlert(true, {
-    //   message: error,
-    //   messageType: 'error'
-    // });
-    // removeLocalStorage(LocalStorageKey.USER_INFO);
-    window.location.href = "/login";
-    return Promise.reject(error);
-  }
-);
+// instance.interceptors.request.use(
+//   async function (config) {
+//     // 從 localStorage 取得 token
+//     // const storage = getLocalStorage(LocalStorageKey.USER_INFO);
+//     // if (storage) {
+//     //   const userInfo = storage;
+//     //   if (userInfo && userInfo?.state?.user?.token) {
+//     //     config.headers["x-auth-token"] = userInfo.state.user.token;
+//     //   }
+//     // }
+//     // return config;
+//   },
+//   function (error) {
+//     // const { setShowingAlert } = commonStore.getState();
+//     // Do something with request error
+//     console.error(error);
+//     // setShowingAlert(true, {
+//     //   message: error,
+//     //   messageType: 'error'
+//     // });
+//     // removeLocalStorage(LocalStorageKey.USER_INFO);
+//     window.location.href = "/login";
+//     return Promise.reject(error);
+//   }
+// );
 
 instance.interceptors.response.use(
   function (response) {
@@ -55,7 +55,7 @@ instance.interceptors.response.use(
 
     if (response.data.code === 4000) {
       // removeLocalStorage(LocalStorageKey.USER_INFO);
-      window.location.href = "/login";
+      // window.location.href = "/login";
     } else if (response.data.code !== 0) {
       // const { setShowingAlert } = commonStore.getState();
       // const errorI18n = errorMessageTranslateConfig[response.data.code];
@@ -88,7 +88,7 @@ instance.interceptors.response.use(
     //   messageType: "error",
     // });
     // removeLocalStorage(LocalStorageKey.USER_INFO);
-    window.location.href = "/login";
+    // window.location.href = "/login";
     return Promise.reject(error);
   }
 );

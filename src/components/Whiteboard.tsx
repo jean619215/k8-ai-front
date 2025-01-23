@@ -2,7 +2,7 @@
 import DownloadIcon from "@mui/icons-material/Download";
 import { Button, Typography } from "@mui/material";
 import React, { use, useEffect, useRef, useState } from "react";
-import { ReactSketchCanvas } from "react-sketch-canvas";
+import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
 
 import { VisuallyHiddenInput } from "@/components/VisuallyHiddenInput";
 import { cn } from "@/lib/utils";
@@ -13,7 +13,7 @@ const Whiteboard = ({ className }: { className?: string }) => {
     useCommonStore();
 
   const colorInputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<any>(null);
+  const canvasRef = useRef<ReactSketchCanvasRef | null>(null);
   // const [savedData, setSavedData] = useState<string | null>(null);
 
   // const [whiteboardData, setWhiteboardData] = useState<any>(null);
@@ -35,14 +35,12 @@ const Whiteboard = ({ className }: { className?: string }) => {
       reader.readAsDataURL(uploadImageFile);
     } else {
       setBackgroundImage(undefined);
-      handleSaveImage();
+      // handleSaveImage();
     }
   }, [uploadImageFile]);
 
   useEffect(() => {
-    if (backgroundImage) {
-      handleSaveImage();
-    }
+    handleSaveImage();
   }, [backgroundImage]);
 
   // // 保存畫布內容
@@ -59,10 +57,11 @@ const Whiteboard = ({ className }: { className?: string }) => {
   // 保存畫布內容
   const handleSaveImage = async () => {
     if (canvasRef.current) {
+      console.warn("_____handleSaveImage");
       // const data = await canvasRef.current.exportPaths(); // 獲取畫布的路徑數據 (JSON)
       // setSavedData(JSON.stringify(data));
 
-      const image = await canvasRef.current.exportImage("png"); // 導出為圖片
+      const image = await canvasRef.current?.exportImage("png"); // 導出為圖片
       //圖片轉換為base64
       // setSavedImage(image);
       // setUserSavedData(image); // 設定保存的數據
@@ -70,7 +69,7 @@ const Whiteboard = ({ className }: { className?: string }) => {
     }
   };
 
-  const handleWhiteboardChange = (e: any) => {
+  const handleWhiteboardChange = (e: unknown) => {
     handleSaveImage();
   };
 
@@ -92,7 +91,9 @@ const Whiteboard = ({ className }: { className?: string }) => {
   const handleDownloadJSON = async () => {
     if (canvasRef.current) {
       const savedData = await canvasRef.current.exportPaths();
-      const blob = new Blob([savedData], { type: "application/json" });
+      const blob = new Blob([JSON.stringify(savedData)], {
+        type: "application/json",
+      });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = "canvas-data.json";

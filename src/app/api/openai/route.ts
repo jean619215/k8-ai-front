@@ -25,8 +25,6 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("_____body", body.messages);
-
     // return NextResponse.json({ body });
     // return NextResponse.json({
     //   result: {
@@ -44,8 +42,6 @@ export async function POST(req: Request) {
     });
 
     const result = completion.choices[0];
-
-    console.log("_____result", result);
 
     // const result = {
     //   message: {

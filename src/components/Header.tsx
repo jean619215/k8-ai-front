@@ -2,11 +2,11 @@
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import LanguageIcon from "@mui/icons-material/Language";
+import MenuIcon from "@mui/icons-material/Menu";
 import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import MenuIcon from "@mui/icons-material/Menu";
 
 import logoImage from "@/assets/icons/main-logo.svg";
 import avatarImg from "@/assets/images/avatar.png";

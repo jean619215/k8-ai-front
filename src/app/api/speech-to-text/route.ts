@@ -1,6 +1,5 @@
 import { SpeechClient } from "@google-cloud/speech";
 import fs from "fs";
-import multer from "multer";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 import * as nextConnect from "next-connect";
@@ -33,7 +32,7 @@ export const POST = async (req: NextRequest) => {
     });
 
     const transcription = response?.results
-      .map((result) => result.alternatives[0].transcript)
+      ?.map((result) => result?.alternatives?.[0]?.transcript)
       .join("\n");
 
     return NextResponse.json({ transcript: transcription });

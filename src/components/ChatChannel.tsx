@@ -15,9 +15,10 @@ import rehypeMathjax from "rehype-mathjax";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
-import VoiceRecorder from "@/components/VoiceRecorder";
+import useChat, { ChatMessage } from "@/hooks/useChat";
+// import VoiceRecorder from "@/components/VoiceRecorder";
 import useOpenAI from "@/hooks/useOpenAI";
-import { cn } from "@/lib/utils";
+import { cn, preprocessLaTeX } from "@/lib/utils";
 import useCommonStore from "@/stores/useCommonStore";
 
 function ChatChannel({ className }: { className?: string }) {
@@ -33,7 +34,7 @@ function ChatChannel({ className }: { className?: string }) {
     setIsNewWhiteboardImage,
     speechToText,
   } = useCommonStore();
-  const { messageStore, openAILoading, sendChatMessage } = useOpenAI();
+  const { messageStore, chatLoading, sendMessage } = useChat();
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
@@ -72,15 +73,13 @@ function ChatChannel({ className }: { className?: string }) {
 
     setIsLoading(true);
 
-    const messages: any[] = [
-      {
-        type: "text",
-        text: inputValue,
-      },
-    ];
+    const messageContent: ChatMessage = {
+      role: "user",
+      content: [{ type: "text", text: inputValue }],
+    };
 
     if (whiteboardImage && isNewWhiteboardImage) {
-      messages.push({
+      messageContent.content.push({
         type: "image_url",
         image_url: {
           url: whiteboardImage,
@@ -97,11 +96,13 @@ function ChatChannel({ className }: { className?: string }) {
     setIsLoading(false);
     setIsNewWhiteboardImage(false);
 
-    const aiMessage = await sendChatMessage(messages);
+    const aiMessage = await sendMessage(messageContent);
     if (aiMessage) {
+      const latexText = preprocessLaTeX(aiMessage);
+
       setMessages((prevMessages) => [
         ...prevMessages,
-        { message: aiMessage, isUser: false },
+        { message: latexText, isUser: false },
       ]);
     }
 
@@ -162,7 +163,7 @@ function ChatChannel({ className }: { className?: string }) {
             </div>
           </div>
         ))}
-        {openAILoading && (
+        {chatLoading && (
           <div className={`flex items-center p-2 justify-star`}>
             <div className={`p-3 rounded-lg bg-gray-200 mr-5`}>
               <CircularProgress />
@@ -192,7 +193,7 @@ function ChatChannel({ className }: { className?: string }) {
               <Button onClick={handleSendMessage} disabled={isLoading}>
                 Send
               </Button>
-              <VoiceRecorder />
+              {/* <VoiceRecorder /> */}
             </InputAdornment>
           }
         />
