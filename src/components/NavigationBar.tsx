@@ -8,10 +8,6 @@ import { cn } from "@/lib/utils";
 
 const navigationConfig = [
   {
-    label: () => <div>Chat</div>,
-    route: "/chat/",
-  },
-  {
     label: () => <div>Whiteboard</div>,
     route: "/whiteboard/",
   },

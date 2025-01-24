@@ -61,7 +61,7 @@ const Whiteboard = ({ className }: { className?: string }) => {
       // const data = await canvasRef.current.exportPaths(); // 獲取畫布的路徑數據 (JSON)
       // setSavedData(JSON.stringify(data));
 
-      const image = await canvasRef.current?.exportImage("png"); // 導出為圖片
+      const image = await canvasRef.current?.exportImage("jpeg"); // 導出為圖片
       //圖片轉換為base64
       // setSavedImage(image);
       // setUserSavedData(image); // 設定保存的數據
