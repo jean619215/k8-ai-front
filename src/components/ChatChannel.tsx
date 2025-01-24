@@ -1,6 +1,7 @@
 "use client";
 import "katex/dist/katex.min.css";
 
+import StopCircleIcon from "@mui/icons-material/StopCircle";
 import {
   Button,
   CircularProgress,
@@ -15,8 +16,8 @@ import rehypeMathjax from "rehype-mathjax";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
+import VoiceRecorder from "@/components/VoiceRecorder";
 import useChat, { ChatMessage } from "@/hooks/useChat";
-// import VoiceRecorder from "@/components/VoiceRecorder";
 import useOpenAI from "@/hooks/useOpenAI";
 import { cn, preprocessLaTeX } from "@/lib/utils";
 import useCommonStore from "@/stores/useCommonStore";
@@ -193,7 +194,7 @@ function ChatChannel({ className }: { className?: string }) {
               <Button onClick={handleSendMessage} disabled={isLoading}>
                 Send
               </Button>
-              {/* <VoiceRecorder /> */}
+              <VoiceRecorder />
             </InputAdornment>
           }
         />

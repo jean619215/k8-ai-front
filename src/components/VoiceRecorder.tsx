@@ -1,6 +1,7 @@
 "use client";
 
 import MicIcon from "@mui/icons-material/Mic";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
 import { Button, CircularProgress, IconButton } from "@mui/material";
 import axios from "axios";
 import React, { useRef, useState } from "react";
@@ -81,9 +82,9 @@ export default function VoiceRecorder() {
     <div>
       <Button
         onClick={isRecording ? stopRecording : startRecording}
-        color={isRecording ? "secondary" : "primary"}
+        // color={isRecording ? "secondary" : "primary"}
       >
-        {isRecording ? <CircularProgress /> : <MicIcon />}
+        {isRecording ? <StopCircleIcon /> : <MicIcon />}
       </Button>
       {/* {audioUrl && (
         <audio controls>
