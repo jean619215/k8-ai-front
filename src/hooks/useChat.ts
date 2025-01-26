@@ -47,8 +47,6 @@ const useChat = () => {
     try {
       const newMessage: ChatMessage[] = [...messageStore, message];
 
-      console.log("____newMessage", newMessage);
-
       const response: AxiosResponse<ChatMessageResponse> = await axios.post(
         apiUrl.CHAT,
         {

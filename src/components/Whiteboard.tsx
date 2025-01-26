@@ -57,7 +57,6 @@ const Whiteboard = ({ className }: { className?: string }) => {
   // 保存畫布內容
   const handleSaveImage = async () => {
     if (canvasRef.current) {
-      console.warn("_____handleSaveImage");
       // const data = await canvasRef.current.exportPaths(); // 獲取畫布的路徑數據 (JSON)
       // setSavedData(JSON.stringify(data));
 
@@ -104,10 +103,10 @@ const Whiteboard = ({ className }: { className?: string }) => {
   // 下載 PNG 圖片
   const handleDownloadImage = async () => {
     if (canvasRef.current) {
-      const savedImage = await canvasRef.current.exportImage("png");
+      const savedImage = await canvasRef.current.exportImage("jpeg");
       const link = document.createElement("a");
       link.href = savedImage;
-      link.download = "canvas-image.png";
+      link.download = "canvas-image.jpeg";
       link.click();
     }
   };
@@ -211,7 +210,7 @@ const Whiteboard = ({ className }: { className?: string }) => {
       />
 
       {/* 顯示保存的圖片 */}
-      {whiteboardImage && (
+      {/* {whiteboardImage && (
         <div className="mt-4">
           <h3>保存的圖片：</h3>
           <img
@@ -220,7 +219,7 @@ const Whiteboard = ({ className }: { className?: string }) => {
             style={{ border: "1px solid #ccc" }}
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

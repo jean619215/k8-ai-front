@@ -16,6 +16,7 @@
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
     "@google-cloud/speech": "^6.7.0",
+    "@google-cloud/text-to-speech": "^5.8.0",
     "@lingui/react": "^5.1.0",
     "@lingui/swc-plugin": "^5.0.1",
     "@mui/icons-material": "^6.2.0",

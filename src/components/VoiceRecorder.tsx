@@ -68,7 +68,6 @@ export default function VoiceRecorder() {
             }
           );
           const data = response.data;
-          console.log("______轉換結果：", data.transcript);
           setSpeechToText(data.transcript);
         }
       };
