@@ -4,12 +4,10 @@ import { useState } from "react";
 
 const useTextToSpeech = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [textToSpeechLoading, setLoading] = useState(false);
 
   const convertTextToSpeech = async (text: string) => {
     setLoading(true);
-    setError(null);
     setAudioUrl(null);
 
     try {
@@ -27,17 +25,15 @@ const useTextToSpeech = () => {
         });
         const audioUrl = URL.createObjectURL(audioBlob);
         setAudioUrl(audioUrl);
-      } else {
-        setError("Failed to get audio file path");
       }
     } catch (err) {
-      setError("Failed to communicate with the server");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  return { audioUrl, loading, error, convertTextToSpeech };
+  return { audioUrl, textToSpeechLoading, convertTextToSpeech };
 };
 
 export default useTextToSpeech;

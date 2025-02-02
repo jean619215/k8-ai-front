@@ -7,7 +7,7 @@ import useTextToSpeech from "@/hooks/useTextToSpeech";
 
 const VoiceRecorder: React.FC = () => {
   const [recordedText, setRecordedText] = useState("");
-  const { audioUrl, loading, error, convertTextToSpeech } = useTextToSpeech();
+  const { audioUrl, convertTextToSpeech } = useTextToSpeech();
 
   const handleRecord = (text: string) => {
     convertTextToSpeech(recordedText);
@@ -27,8 +27,6 @@ const VoiceRecorder: React.FC = () => {
       <button onClick={() => handleRecord("Sample recorded text")}>
         Convert
       </button>
-      {loading && <p>Converting...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
       {audioUrl && (
         <div>
           <h2>Audio Output</h2>
